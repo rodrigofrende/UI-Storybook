@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-## 📚 Tipo de Problema
+## 📚 Tipo de Problema de Documentación
 
 **¿Qué tipo de problema de documentación tienes?**
 
@@ -82,11 +82,40 @@ Describe cómo debería funcionar o verse la documentación.
 - [ ] Alta - Bloquea el uso
 - [ ] Crítica - Información incorrecta
 
+## 🌍 Idioma
+
+**¿En qué idioma está la documentación?**
+
+- [ ] Español
+- [ ] Inglés
+- [ ] Francés
+- [ ] Alemán
+- [ ] Otro: _________
+
+## 📋 Tipo de Contenido
+
+**¿Qué tipo de contenido está afectado?**
+
+- [ ] Texto descriptivo
+- [ ] Ejemplos de código
+- [ ] Imágenes o diagramas
+- [ ] Enlaces externos
+- [ ] Otro: _________
+
+## 💰 Contribución
+
+**¿Te gustaría contribuir a la solución?**
+
+- [ ] Sí, puedo ayudar a escribir la documentación
+- [ ] Sí, puedo ayudar a revisar
+- [ ] No, solo reporto el problema
+- [ ] Otro: _________
+
 ## 📝 Información Adicional
 
 **¿Hay algo más que debamos saber?**
 
-Cualquier contexto adicional que pueda ayudar a entender mejor el problema.
+Cualquier contexto adicional que pueda ayudar a entender mejor el problema de documentación.
 
 ---
 
