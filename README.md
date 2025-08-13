@@ -2,6 +2,8 @@
 
 Una librería de componentes UI completa construida con HTML, Tailwind CSS y Storybook para documentación y desarrollo.
 
+> **Nota**: Este proyecto utiliza GitHub Actions para CI/CD automático.
+
 ## 🚀 Características
 
 - **24 Componentes UI** - Botones, inputs, modales, y más
