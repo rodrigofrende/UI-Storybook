@@ -26,6 +26,9 @@ jobs:
     - name: Build Storybook
       run: npm run build-storybook
       
+    - name: List build contents
+      run: ls -la storybook-static/
+      
     - name: Upload Storybook build
       uses: actions/upload-artifact@v4
       with:
@@ -47,8 +50,12 @@ jobs:
         name: storybook-build
         path: storybook-static/
         
+    - name: Verify build contents
+      run: ls -la storybook-static/
+      
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./storybook-static
+        force_orphan: true
