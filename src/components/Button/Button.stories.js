@@ -1,142 +1,241 @@
+import Button from './Button.js';
+
 export default {
   title: 'Components/Button',
+  component: Button,
   parameters: {
     docs: {
       description: {
-        component: 'Un botón reutilizable con diferentes variantes y estados.'
+        component: 'Un componente de botón versátil con múltiples variantes, tamaños y estados.'
       }
     }
   },
   argTypes: {
     text: {
       control: 'text',
-      description: 'Texto del botón',
-      defaultValue: 'Click me'
+      description: 'Texto del botón'
     },
     variant: {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'outline', 'ghost'],
-      description: 'Variante del botón',
-      defaultValue: 'primary'
+      description: 'Variante visual del botón'
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
-      description: 'Tamaño del botón',
-      defaultValue: 'md'
+      options: ['small', 'medium', 'large'],
+      description: 'Tamaño del botón'
     },
     disabled: {
       control: 'boolean',
-      description: 'Estado deshabilitado',
-      defaultValue: false
+      description: 'Estado deshabilitado'
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Estado de carga'
+    },
+    icon: {
+      control: 'text',
+      description: 'Icono SVG del botón'
+    },
+    onClick: {
+      action: 'clicked',
+      description: 'Función llamada al hacer clic'
     }
   }
 };
 
+// Botón primario por defecto
 export const Primary = {
   args: {
-    text: 'Primary Button',
+    text: 'Botón Primario',
     variant: 'primary',
-    size: 'md',
+    size: 'medium',
+    disabled: false,
+    loading: false
+  },
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
+};
+
+// Botón secundario
+export const Secondary = {
+  args: {
+    text: 'Botón Secundario',
+    variant: 'secondary',
+    size: 'medium',
     disabled: false
   },
   render: (args) => {
-    const button = document.createElement('button');
-    button.textContent = args.text;
-    button.className = getButtonClasses(args.variant, args.size, args.disabled);
-    button.disabled = args.disabled;
-    
-    if (!args.disabled) {
-      button.addEventListener('click', () => {
-        console.log('Button clicked!');
-        button.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          button.style.transform = 'scale(1)';
-        }, 150);
-      });
-    }
-    
-    return button;
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
   }
 };
 
-export const Secondary = {
-  args: {
-    text: 'Secondary Button',
-    variant: 'secondary',
-    size: 'md',
-    disabled: false
-  },
-  render: Primary.render
-};
-
+// Botón outline
 export const Outline = {
   args: {
-    text: 'Outline Button',
+    text: 'Botón Outline',
     variant: 'outline',
-    size: 'md',
+    size: 'medium',
     disabled: false
   },
-  render: Primary.render
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
 };
 
+// Botón ghost
 export const Ghost = {
   args: {
-    text: 'Ghost Button',
+    text: 'Botón Ghost',
     variant: 'ghost',
-    size: 'md',
+    size: 'medium',
     disabled: false
   },
-  render: Primary.render
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
 };
 
+// Botón pequeño
 export const Small = {
   args: {
-    text: 'Small Button',
+    text: 'Botón Pequeño',
     variant: 'primary',
-    size: 'sm',
+    size: 'small',
     disabled: false
   },
-  render: Primary.render
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
 };
 
+// Botón grande
 export const Large = {
   args: {
-    text: 'Large Button',
+    text: 'Botón Grande',
     variant: 'primary',
-    size: 'lg',
+    size: 'large',
     disabled: false
   },
-  render: Primary.render
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
 };
 
+// Botón deshabilitado
 export const Disabled = {
   args: {
-    text: 'Disabled Button',
+    text: 'Botón Deshabilitado',
     variant: 'primary',
-    size: 'md',
+    size: 'medium',
     disabled: true
   },
-  render: Primary.render
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
 };
 
-function getButtonClasses(variant, size, disabled) {
-  const baseClasses = 'font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all duration-200';
-  
-  const variantClasses = {
-    primary: 'bg-light-blue text-white hover:bg-blue-600 focus:ring-blue-500',
-    secondary: 'bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-500',
-    outline: 'border-2 border-light-blue text-light-blue hover:bg-light-blue hover:text-white focus:ring-light-blue',
-    ghost: 'text-light-blue hover:bg-blue-100 focus:ring-blue-500'
-  };
-  
-  const sizeClasses = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg'
-  };
-  
-  const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
-  
-  return `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabledClasses}`;
-}
+// Botón con estado de carga
+export const Loading = {
+  args: {
+    text: 'Cargando...',
+    variant: 'primary',
+    size: 'medium',
+    loading: true
+  },
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
+};
+
+// Botón con icono
+export const WithIcon = {
+  args: {
+    text: 'Botón con Icono',
+    variant: 'primary',
+    size: 'medium',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>'
+  },
+  render: (args) => {
+    const button = new Button(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    button.render(container);
+    return container;
+  }
+};
+
+// Galería de todos los botones
+export const AllVariants = {
+  render: () => {
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    
+    const variants = ['primary', 'secondary', 'outline', 'ghost'];
+    const sizes = ['small', 'medium', 'large'];
+    
+    variants.forEach(variant => {
+      const variantContainer = document.createElement('div');
+      variantContainer.style.marginBottom = '20px';
+      
+      const title = document.createElement('h3');
+      title.textContent = variant.charAt(0).toUpperCase() + variant.slice(1);
+      title.style.marginBottom = '10px';
+      title.style.fontWeight = 'bold';
+      variantContainer.appendChild(title);
+      
+      const buttonContainer = document.createElement('div');
+      buttonContainer.style.display = 'flex';
+      buttonContainer.style.gap = '10px';
+      buttonContainer.style.alignItems = 'center';
+      
+      sizes.forEach(size => {
+        const button = new Button({
+          text: size.charAt(0).toUpperCase() + size.slice(1),
+          variant,
+          size,
+          onClick: () => console.log(`${variant} ${size} clicked`)
+        });
+        button.render(buttonContainer);
+      });
+      
+      variantContainer.appendChild(buttonContainer);
+      container.appendChild(variantContainer);
+    });
+    
+    return container;
+  }
+};

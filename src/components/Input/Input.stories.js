@@ -1,227 +1,428 @@
+import Input from './Input.js';
+
 export default {
-  title: 'Components/Input',
+  title: 'Components/Input/Input',
+  component: Input,
   parameters: {
     docs: {
       description: {
-        component: 'Un campo de entrada de texto reutilizable con diferentes variantes y estados.'
+        component: 'Un componente de entrada de texto versátil con soporte para etiquetas, iconos, validación y múltiples tipos.'
       }
     }
   },
   argTypes: {
-    placeholder: {
-      control: 'text',
-      description: 'Texto de placeholder',
-      defaultValue: 'Enter text...'
-    },
     type: {
       control: { type: 'select' },
-      options: ['text', 'email', 'password', 'number', 'tel', 'url'],
-      description: 'Tipo de input',
-      defaultValue: 'text'
+      options: ['text', 'email', 'password', 'number', 'tel', 'url', 'search'],
+      description: 'Tipo de input'
     },
-    size: {
-      control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
-      description: 'Tamaño del input',
-      defaultValue: 'md'
+    placeholder: {
+      control: 'text',
+      description: 'Texto de placeholder'
     },
-    variant: {
-      control: { type: 'select' },
-      options: ['default', 'outline', 'filled'],
-      description: 'Variante del input',
-      defaultValue: 'default'
+    value: {
+      control: 'text',
+      description: 'Valor inicial del input'
+    },
+    label: {
+      control: 'text',
+      description: 'Etiqueta del input'
+    },
+    required: {
+      control: 'boolean',
+      description: 'Si el campo es requerido'
     },
     disabled: {
       control: 'boolean',
-      description: 'Estado deshabilitado',
-      defaultValue: false
+      description: 'Si el input está deshabilitado'
     },
     error: {
-      control: 'boolean',
-      description: 'Estado de error',
-      defaultValue: false
-    },
-    helperText: {
       control: 'text',
-      description: 'Texto de ayuda',
-      defaultValue: ''
+      description: 'Mensaje de error'
+    },
+    icon: {
+      control: 'text',
+      description: 'Icono SVG para el input'
+    },
+    className: {
+      control: 'text',
+      description: 'Clases CSS adicionales'
     }
   }
 };
 
-export const Default = {
+// Input básico
+export const Basic = {
   args: {
-    placeholder: 'Enter text...',
     type: 'text',
-    size: 'md',
-    variant: 'default',
+    placeholder: 'Escribe algo aquí...',
+    value: '',
+    label: 'Nombre',
+    required: false,
     disabled: false,
-    error: false,
-    helperText: ''
+    error: '',
+    icon: '',
+    className: ''
   },
   render: (args) => {
+    const input = new Input(args);
     const container = document.createElement('div');
-    container.className = 'space-y-2';
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
     
-    const input = document.createElement('input');
-    input.type = args.type;
-    input.placeholder = args.placeholder;
-    input.className = getInputClasses(args.variant, args.size, args.disabled, args.error);
-    input.disabled = args.disabled;
+    input.render(container);
+    return container;
+  }
+};
+
+// Input con etiqueta
+export const WithLabel = {
+  args: {
+    type: 'text',
+    placeholder: 'Ingresa tu nombre completo',
+    value: '',
+    label: 'Nombre Completo',
+    required: true,
+    disabled: false,
+    error: '',
+    icon: '',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
     
-    if (args.helperText) {
-      const helper = document.createElement('p');
-      helper.className = getHelperClasses(args.error);
-      helper.textContent = args.helperText;
-      container.appendChild(helper);
-    }
+    input.render(container);
+    return container;
+  }
+};
+
+// Input con icono
+export const WithIcon = {
+  args: {
+    type: 'text',
+    placeholder: 'Buscar...',
+    value: '',
+    label: 'Búsqueda',
+    required: false,
+    disabled: false,
+    error: '',
+    icon: '🔍',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
     
-    container.insertBefore(input, container.firstChild);
+    input.render(container);
+    return container;
+  }
+};
+
+// Input con error
+export const WithError = {
+  args: {
+    type: 'email',
+    placeholder: 'ejemplo@email.com',
+    value: 'email-invalido',
+    label: 'Correo Electrónico',
+    required: true,
+    disabled: false,
+    error: 'Por favor ingresa un email válido',
+    icon: '📧',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
     
-    // Agregar funcionalidad de focus
-    input.addEventListener('focus', () => {
-      input.classList.add('ring-2', 'ring-light-blue', 'ring-opacity-50');
-    });
+    input.render(container);
+    return container;
+  }
+};
+
+// Input deshabilitado
+export const Disabled = {
+  args: {
+    type: 'text',
+    placeholder: 'Campo deshabilitado',
+    value: 'No se puede editar',
+    label: 'Campo Deshabilitado',
+    required: false,
+    disabled: true,
+    error: '',
+    icon: '🔒',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
     
-    input.addEventListener('blur', () => {
-      input.classList.remove('ring-2', 'ring-light-blue', 'ring-opacity-50');
+    input.render(container);
+    return container;
+  }
+};
+
+// Input de contraseña
+export const Password = {
+  args: {
+    type: 'password',
+    placeholder: 'Ingresa tu contraseña',
+    value: '',
+    label: 'Contraseña',
+    required: true,
+    disabled: false,
+    error: '',
+    icon: '🔐',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
+    
+    input.render(container);
+    return container;
+  }
+};
+
+// Input de email
+export const Email = {
+  args: {
+    type: 'email',
+    placeholder: 'usuario@ejemplo.com',
+    value: '',
+    label: 'Email',
+    required: true,
+    disabled: false,
+    error: '',
+    icon: '📧',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
+    
+    input.render(container);
+    return container;
+  }
+};
+
+// Input numérico
+export const Number = {
+  args: {
+    type: 'number',
+    placeholder: '0',
+    value: '',
+    label: 'Edad',
+    required: false,
+    disabled: false,
+    error: '',
+    icon: '🔢',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
+    
+    input.render(container);
+    return container;
+  }
+};
+
+// Input de teléfono
+export const Phone = {
+  args: {
+    type: 'tel',
+    placeholder: '+1 (555) 123-4567',
+    value: '',
+    label: 'Teléfono',
+    required: false,
+    disabled: false,
+    error: '',
+    icon: '📞',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
+    
+    input.render(container);
+    return container;
+  }
+};
+
+// Input de URL
+export const URL = {
+  args: {
+    type: 'url',
+    placeholder: 'https://ejemplo.com',
+    value: '',
+    label: 'Sitio Web',
+    required: false,
+    disabled: false,
+    error: '',
+    icon: '🌐',
+    className: ''
+  },
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '400px';
+    
+    input.render(container);
+    return container;
+  }
+};
+
+// Galería de tipos
+export const TypeGallery = {
+  render: () => {
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    
+    const title = document.createElement('h3');
+    title.textContent = 'Galería de Tipos de Input';
+    title.style.marginBottom = '20px';
+    title.style.color = '#333';
+    container.appendChild(title);
+    
+    const types = [
+      { type: 'text', label: 'Texto', placeholder: 'Texto libre', icon: '📝' },
+      { type: 'email', label: 'Email', placeholder: 'email@ejemplo.com', icon: '📧' },
+      { type: 'password', label: 'Contraseña', placeholder: '••••••••', icon: '🔐' },
+      { type: 'number', label: 'Número', placeholder: '0', icon: '🔢' },
+      { type: 'tel', label: 'Teléfono', placeholder: '+1 (555) 123-4567', icon: '📞' },
+      { type: 'url', label: 'URL', placeholder: 'https://ejemplo.com', icon: '🌐' },
+      { type: 'search', label: 'Búsqueda', placeholder: 'Buscar...', icon: '🔍' }
+    ];
+    
+    types.forEach((inputType) => {
+      const input = new Input({
+        type: inputType.type,
+        placeholder: inputType.placeholder,
+        label: inputType.label,
+        icon: inputType.icon,
+        required: false
+      });
+      
+      const inputContainer = document.createElement('div');
+      inputContainer.style.marginBottom = '20px';
+      inputContainer.style.maxWidth = '400px';
+      
+      input.render(inputContainer);
+      container.appendChild(inputContainer);
     });
     
     return container;
   }
 };
 
-export const Outline = {
+// Input interactivo
+export const Interactive = {
   args: {
-    placeholder: 'Outline input...',
     type: 'text',
-    size: 'md',
-    variant: 'outline',
+    placeholder: 'Escribe algo...',
+    value: '',
+    label: 'Input Interactivo',
+    required: false,
     disabled: false,
-    error: false,
-    helperText: 'This is an outline input'
+    error: '',
+    icon: '✨',
+    className: ''
   },
-  render: Default.render
+  render: (args) => {
+    const input = new Input(args);
+    const container = document.createElement('div');
+    container.style.padding = '20px';
+    container.style.maxWidth = '500px';
+    
+    // Controles interactivos
+    const controls = document.createElement('div');
+    controls.style.marginBottom = '20px';
+    controls.style.display = 'flex';
+    controls.style.gap = '10px';
+    controls.style.flexWrap = 'wrap';
+    
+    const typeSelect = document.createElement('select');
+    typeSelect.className = 'px-3 py-1 border rounded';
+    ['text', 'email', 'password', 'number', 'tel', 'url', 'search'].forEach(type => {
+      const option = document.createElement('option');
+      option.value = type;
+      option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+      option.selected = type === args.type;
+      typeSelect.appendChild(option);
+    });
+    typeSelect.onchange = (e) => {
+      args.type = e.target.value;
+      input.destroy();
+      const newInput = new Input(args);
+      newInput.render(container);
+    };
+    
+    const labelInput = document.createElement('input');
+    labelInput.type = 'text';
+    labelInput.placeholder = 'Etiqueta...';
+    labelInput.className = 'px-3 py-1 border rounded';
+    labelInput.value = args.label;
+    labelInput.onchange = (e) => {
+      args.label = e.target.value;
+      input.destroy();
+      const newInput = new Input(args);
+      newInput.render(container);
+    };
+    
+    const errorInput = document.createElement('input');
+    errorInput.type = 'text';
+    errorInput.placeholder = 'Error...';
+    errorInput.className = 'px-3 py-1 border rounded';
+    errorInput.value = args.error;
+    errorInput.onchange = (e) => {
+      args.error = e.target.value;
+      input.destroy();
+      const newInput = new Input(args);
+      newInput.render(container);
+    };
+    
+    const disabledCheckbox = document.createElement('input');
+    disabledCheckbox.type = 'checkbox';
+    disabledCheckbox.checked = args.disabled;
+    disabledCheckbox.onchange = (e) => {
+      args.disabled = e.target.checked;
+      input.destroy();
+      const newInput = new Input(args);
+      newInput.render(container);
+    };
+    
+    const disabledLabel = document.createElement('label');
+    disabledLabel.textContent = 'Deshabilitado';
+    disabledLabel.style.marginLeft = '5px';
+    
+    controls.appendChild(typeSelect);
+    controls.appendChild(labelInput);
+    controls.appendChild(errorInput);
+    controls.appendChild(disabledCheckbox);
+    controls.appendChild(disabledLabel);
+    
+    container.appendChild(controls);
+    input.render(container);
+    
+    return container;
+  }
 };
-
-export const Filled = {
-  args: {
-    placeholder: 'Filled input...',
-    type: 'text',
-    size: 'md',
-    variant: 'filled',
-    disabled: false,
-    error: false,
-    helperText: 'This is a filled input'
-  },
-  render: Default.render
-};
-
-export const Small = {
-  args: {
-    placeholder: 'Small input...',
-    type: 'text',
-    size: 'sm',
-    variant: 'default',
-    disabled: false,
-    error: false,
-    helperText: 'Small size input'
-  },
-  render: Default.render
-};
-
-export const Large = {
-  args: {
-    placeholder: 'Large input...',
-    type: 'text',
-    size: 'lg',
-    variant: 'default',
-    disabled: false,
-    error: false,
-    helperText: 'Large size input'
-  },
-  render: Default.render
-};
-
-export const WithError = {
-  args: {
-    placeholder: 'Input with error...',
-    type: 'text',
-    size: 'md',
-    variant: 'default',
-    disabled: false,
-    error: true,
-    helperText: 'This field is required'
-  },
-  render: Default.render
-};
-
-export const Disabled = {
-  args: {
-    placeholder: 'Disabled input...',
-    type: 'text',
-    size: 'md',
-    variant: 'default',
-    disabled: true,
-    error: false,
-    helperText: 'This input is disabled'
-  },
-  render: Default.render
-};
-
-export const Email = {
-  args: {
-    placeholder: 'Enter your email...',
-    type: 'email',
-    size: 'md',
-    variant: 'default',
-    disabled: false,
-    error: false,
-    helperText: 'We\'ll never share your email'
-  },
-  render: Default.render
-};
-
-export const Password = {
-  args: {
-    placeholder: 'Enter your password...',
-    type: 'password',
-    size: 'md',
-    variant: 'default',
-    disabled: false,
-    error: false,
-    helperText: 'Password must be at least 8 characters'
-  },
-  render: Default.render
-};
-
-function getInputClasses(variant, size, disabled, error) {
-  const baseClasses = 'w-full rounded-lg border transition-all duration-200 focus:outline-none';
-  
-  const variantClasses = {
-    default: 'border-gray-300 bg-white',
-    outline: 'border-2 border-light-blue bg-transparent',
-    filled: 'border-gray-300 bg-gray-50'
-  };
-  
-  const sizeClasses = {
-    sm: 'px-3 py-2 text-sm',
-    md: 'px-4 py-3 text-base',
-    lg: 'px-6 py-4 text-lg'
-  };
-  
-  const stateClasses = disabled 
-    ? 'opacity-50 cursor-not-allowed bg-gray-100' 
-    : error 
-      ? 'border-red-500 focus:border-red-500' 
-      : 'focus:border-light-blue';
-  
-  return `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${stateClasses}`;
-}
-
-function getHelperClasses(error) {
-  const baseClasses = 'text-sm';
-  return error 
-    ? `${baseClasses} text-red-600` 
-    : `${baseClasses} text-gray-600`;
-}
